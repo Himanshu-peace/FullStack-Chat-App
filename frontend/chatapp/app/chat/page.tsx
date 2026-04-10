@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import API from "@/lib/api";
 import { connectSocket } from "@/lib/socket";
 import UserList from "@/components/UserList";
+import ChatBox from "@/components/ChatBox";
+import Navbar from "@/components/Navbar";
 
 export default function ChatPage() {
   const [users, setUsers] = useState<any[]>([]);
@@ -30,21 +32,26 @@ export default function ChatPage() {
   }, []);
 
   return (
-    <div className="flex h-screen">
-      <UserList
-        users={users}
-        onlineUsers={onlineUsers}
-        onSelectUser={setSelectedUser}
-      />
+    <div className="flex flex-col h-screen">
+      <Navbar />
+      <div className="flex flex-1 ">
+        <div className="w-1/4 border-r overflow-y-auto">
+          <UserList
+            users={users}
+            onlineUsers={onlineUsers}
+            onSelectUser={setSelectedUser}
+          />
+        </div>
 
-      <div className="flex-1 p-4">
-        {selectedUser ? (
-          <h2 className="text-lg font-bold">
-            Chat with {selectedUser.username}
-          </h2>
-        ) : (
-          <p>Select a user to start chatting</p>
-        )}
+        <div className="flex-1 flex flex-col ">
+          {selectedUser ? (
+            <ChatBox selectedUser={selectedUser} />
+          ) : (
+            <div className=" flex items-center justify-center h-full text-gray-500">
+              Select a user to start chatting
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
